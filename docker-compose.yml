@@ -4,7 +4,7 @@ services:
     image: postgres:17-alpine
     container_name: pf-db
     ports:
-      - 5432:${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:5432
     volumes:
       - pf-data:/var/lib/postgresql/data
       - ./_entrypoint:/docker-entrypoint-initdb.d
