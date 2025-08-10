@@ -22,13 +22,29 @@ export const ownerTable = pgTable("owner", {
   name: varchar("name", { length: 255 }).notNull(),
   courseId: varchar("course_id", { length: 20 }).notNull(),
   section: varchar("section", { length: 10 }).notNull(),
+  // userId: uuid("user_id").references(() => userTable.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
     () => new Date()
   ),
 });
 
+// ผู้ใช้ (สำหรับขยายในอนาคต / login)
+export const userTable = pgTable("user", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  username: varchar("username", { length: 255 }).notNull().unique(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
+
 export default {
+  userTable,
   todoTable,
   ownerTable,
 };
